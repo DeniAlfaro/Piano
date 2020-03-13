@@ -34,6 +34,63 @@ namespace Piano
             mixer.ReadFully = true;
             waveOut.Init(mixer);
             waveOut.Play();
+
+            KeyDown += MainWindow_KeyDown;
+        }
+
+        private void MainWindow_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.IsRepeat) return;
+
+            if (e.Key == Key.Z)
+            {
+                Button_Click(this, null);
+            }
+            if (e.Key == Key.X)
+            {
+                BtnRe_Click(this, null);
+            }
+            if (e.Key == Key.S)
+            {
+                BtnDoSos_Click(this, null);
+            }
+            //
+            if (e.Key == Key.C)
+            {
+                BtnReSos_Click(this, null);
+            }
+            if (e.Key == Key.V)
+            {
+                BtnMi_Click(this, null);
+            }
+            if (e.Key == Key.B)
+            {
+                BtnFa_Click(this, null);
+            }
+            if (e.Key == Key.N)
+            {
+                BtnFaSos_Click(this, null);
+            }
+            if (e.Key == Key.M)
+            {
+                BtnSol_Click(this, null);
+            }
+            if (e.Key == Key.A)
+            {
+                BtnSolSos_Click(this, null);
+            }
+            if (e.Key == Key.D)
+            {
+                BtnLa_Click(this, null);
+            }
+            if (e.Key == Key.F)
+            {
+                BtnLaSos_Click(this, null);
+            }
+            if (e.Key == Key.G)
+            {
+                BtnSi_Click(this, null);
+            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -41,11 +98,97 @@ namespace Piano
             var nota_do = new SignalGenerator(44100,1)
             {
                 Gain = 0.5,
-                Frequency = 261.6,
+                Frequency = 261.626,
                 Type = SignalGeneratorType.Sin,
                 
             }.Take(TimeSpan.FromMilliseconds(500));
             mixer.AddMixerInput(nota_do);
+        }
+
+        private void BtnDoSos_Click(object sender, RoutedEventArgs e)
+        {
+
+            var nota_doSos = DoModificado(1.0 / 12.0);
+            mixer.AddMixerInput(nota_doSos);
+        }
+
+        private ISampleProvider NotaDo()
+        {
+            var nota_do = new SignalGenerator(44100, 1)
+            {
+                Gain = 0.5,
+                Frequency = 261.626,
+                Type = SignalGeneratorType.Sin
+            }.Take(TimeSpan.FromMilliseconds(250));
+            return nota_do;
+        }
+
+        private void BtnRe_Click(object sender, RoutedEventArgs e)
+        {
+            var nota_re = DoModificado(2.0 / 12.0);
+            mixer.AddMixerInput(nota_re);
+        }
+
+        private SmbPitchShiftingSampleProvider DoModificado(double exponente)
+        {
+            var nota_do = NotaDo();
+            var nota_modificada = new SmbPitchShiftingSampleProvider(nota_do);
+            nota_modificada.PitchFactor = (float)Math.Pow(2.0, exponente);
+            return nota_modificada;
+        }
+
+        private void BtnReSos_Click(object sender, RoutedEventArgs e)
+        {
+            var nota_reSos = DoModificado(3.0 / 12.0);
+            mixer.AddMixerInput(nota_reSos);
+        }
+
+        private void BtnMi_Click(object sender, RoutedEventArgs e)
+        {
+            var nota_mi = DoModificado(4.0 / 12.0);
+            mixer.AddMixerInput(nota_mi);
+        }
+
+        private void BtnFa_Click(object sender, RoutedEventArgs e)
+        {
+            var nota_fa = DoModificado(5.0 / 12.0);
+            mixer.AddMixerInput(nota_fa);
+        }
+
+        private void BtnFaSos_Click(object sender, RoutedEventArgs e)
+        {
+            var nota_faSos = DoModificado(6.0 / 12.0);
+            mixer.AddMixerInput(nota_faSos);
+        }
+
+        private void BtnSol_Click(object sender, RoutedEventArgs e)
+        {
+            var nota_sol = DoModificado(7.0 / 12.0);
+            mixer.AddMixerInput(nota_sol);
+        }
+
+        private void BtnSolSos_Click(object sender, RoutedEventArgs e)
+        {
+            var nota_solSos = DoModificado(8.0 / 12.0);
+            mixer.AddMixerInput(nota_solSos);
+        }
+
+        private void BtnLa_Click(object sender, RoutedEventArgs e)
+        {
+            var nota_la = DoModificado(9.0 / 12.0);
+            mixer.AddMixerInput(nota_la);
+        }
+
+        private void BtnLaSos_Click(object sender, RoutedEventArgs e)
+        {
+            var nota_laSos = DoModificado(10.0 / 12.0);
+            mixer.AddMixerInput(nota_laSos);
+        }
+
+        private void BtnSi_Click(object sender, RoutedEventArgs e)
+        {
+            var nota_si = DoModificado(11.0 / 12.0);
+            mixer.AddMixerInput(nota_si);
         }
     }
 }
